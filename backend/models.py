@@ -3,8 +3,14 @@ from sqlalchemy import Column, String, Integer, create_engine
 from flask_sqlalchemy import SQLAlchemy
 import json
 
+# from flaskr import app
+from sys import path
+
 database_name = 'trivia'
-database_path = 'postgres://{}/{}'.format('localhost:5432', database_name)
+# database_path = 'postgres://{}/{}'.format('localhost:5432', database_name)
+database_path = "postgresql://{}:{}@{}/{}".format(os.environ.get('DB_USER'),
+os.environ.get('DB_PASSWORD'), 'localhost:5432', 
+database_name)
 
 db = SQLAlchemy()
 
@@ -58,6 +64,9 @@ class Question(db.Model):
             'difficulty': self.difficulty
             }
 
+    def __repr__(self):
+        return f"<Question {self.id}-{self.question}>"    
+
 """
 Category
 
@@ -76,3 +85,6 @@ class Category(db.Model):
             'id': self.id,
             'type': self.type
             }
+
+    def __repr__(self):
+        return f"<Category {self.id}-{self.type}>"        
